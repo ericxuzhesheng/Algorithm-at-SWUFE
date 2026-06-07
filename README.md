@@ -56,7 +56,7 @@
 | # | 主题 | 讲义 | Python 实现 |
 |---|------|------|------------|
 | 1 | 算法介绍 | [Lecture01](slides/Lecture01-Algorithm_Introduction.pdf) | — |
-| 2 | NP-hard 问题补充 | [Lecture02](slides/Lecture02-NP_Hard_Problems_Supplement.pdf) | — |
+| 2 | NP-hard 问题补充 | [Lecture02](slides/Lecture02-NP_Hard_Problems_Supplement.pdf) | [np\_hard\_approximation.py](code/np_hard_approximation.py) |
 | 3 | 数学基础 | [Lecture03](slides/Lecture03-Mathematical_Foundations.pdf) | [math_foundations.py](code/math_foundations.py) |
 | 4–5 | 分治策略（一、二）| [Lecture04\_05](slides/Lecture04_05-Divide_and_Conquer_1_2.pdf) | [divide\_and\_conquer.py](code/divide_and_conquer.py) |
 | 6 | 分治策略（三）| [Lecture06](slides/Lecture06-Divide_and_Conquer_3.pdf) | [selection.py](code/selection.py) · [sequential\_search.py](code/sequential_search.py) |
@@ -64,7 +64,7 @@
 | 9 | 动态规划（三）| [Lecture09](slides/Lecture09-Dynamic_Programming_3.pdf) | [dynamic\_programming.py](code/dynamic_programming.py) |
 | 10–12 | 贪心算法（一、二、三）| [Lecture10\_11\_12](slides/Lecture10_11_12-Greedy_Algorithm_1_2_3.pdf) | [greedy.py](code/greedy.py) |
 | 13–15 | 回溯与分支限界（一、二、三）| [Lecture13\_14\_15](slides/Lecture13_14_15-Backtracking_and_Branch_Bound_1_2_3.pdf) | [backtracking.py](code/backtracking.py) · [branch\_and\_bound.py](code/branch_and_bound.py) |
-| 16 | 深度学习基础（一）| [Lecture16](slides/Lecture16-Deep_Learning_Basics_Part1.pdf) | — |
+| 16 | 深度学习基础（一）| [Lecture16](slides/Lecture16-Deep_Learning_Basics_Part1.pdf) | [deep\_learning\_basics.py](code/deep_learning_basics.py) |
 
 ## 作业说明
 
@@ -113,7 +113,7 @@ Course materials for **Algorithm Design and Analysis** at [Southwestern Universi
 | # | Topic | Slides | Python |
 |---|-------|--------|--------|
 | 1 | Algorithm Introduction | [Lecture01](slides/Lecture01-Algorithm_Introduction.pdf) | — |
-| 2 | NP-Hard Problems (Supplement) | [Lecture02](slides/Lecture02-NP_Hard_Problems_Supplement.pdf) | — |
+| 2 | NP-Hard Problems (Supplement) | [Lecture02](slides/Lecture02-NP_Hard_Problems_Supplement.pdf) | [np\_hard\_approximation.py](code/np_hard_approximation.py) |
 | 3 | Mathematical Foundations | [Lecture03](slides/Lecture03-Mathematical_Foundations.pdf) | [math_foundations.py](code/math_foundations.py) |
 | 4–5 | Divide and Conquer I & II | [Lecture04\_05](slides/Lecture04_05-Divide_and_Conquer_1_2.pdf) | [divide\_and\_conquer.py](code/divide_and_conquer.py) |
 | 6 | Divide and Conquer III | [Lecture06](slides/Lecture06-Divide_and_Conquer_3.pdf) | [selection.py](code/selection.py) · [sequential\_search.py](code/sequential_search.py) |
@@ -121,7 +121,7 @@ Course materials for **Algorithm Design and Analysis** at [Southwestern Universi
 | 9 | Dynamic Programming III | [Lecture09](slides/Lecture09-Dynamic_Programming_3.pdf) | [dynamic\_programming.py](code/dynamic_programming.py) |
 | 10–12 | Greedy Algorithm I, II & III | [Lecture10\_11\_12](slides/Lecture10_11_12-Greedy_Algorithm_1_2_3.pdf) | [greedy.py](code/greedy.py) |
 | 13–15 | Backtracking & Branch and Bound I, II & III | [Lecture13\_14\_15](slides/Lecture13_14_15-Backtracking_and_Branch_Bound_1_2_3.pdf) | [backtracking.py](code/backtracking.py) · [branch\_and\_bound.py](code/branch_and_bound.py) |
-| 16 | Deep Learning Basics Part 1 | [Lecture16](slides/Lecture16-Deep_Learning_Basics_Part1.pdf) | — |
+| 16 | Deep Learning Basics Part 1 | [Lecture16](slides/Lecture16-Deep_Learning_Basics_Part1.pdf) | [deep\_learning\_basics.py](code/deep_learning_basics.py) |
 
 ## Python Implementations
 
@@ -137,6 +137,8 @@ Each file is self-contained with a runnable demo (`python code/<file>.py`).
 | [greedy.py](code/greedy.py) | Activity Selection, Huffman Coding, Fractional Knapsack, Prim, Kruskal, Dijkstra, Task Scheduling |
 | [backtracking.py](code/backtracking.py) | N-Queens, Graph Coloring, Subset Sum, Hamiltonian Cycle, 0/1 Knapsack, Permutations |
 | [branch_and_bound.py](code/branch_and_bound.py) | 0/1 Knapsack B&B, TSP B&B (matrix reduction bound), Assignment Problem B&B |
+| [np_hard_approximation.py](code/np_hard_approximation.py) | Vertex Cover (2-approx), Set Cover (greedy), Max-Cut (local search), TSP (MST 2-approx), Knapsack FPTAS, Bin Packing FFD, 3-SAT random assignment |
+| [deep_learning_basics.py](code/deep_learning_basics.py) | Activation functions, Loss functions, Backpropagation MLP, Adam optimizer, Dropout, 1D Convolution, XOR demo |
 
 ## Homework Summary
 
