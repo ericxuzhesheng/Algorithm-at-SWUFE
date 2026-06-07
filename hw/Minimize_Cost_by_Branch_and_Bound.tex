@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Homework: Minimize Cost by Branch and Bound}
+\author{Algorithm Design and Analysis}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement}
+
+Given $n$ jobs and $n$ workers with a cost matrix $C[i][j]$ (cost of assigning worker $i$
+to job $j$), find an assignment of workers to jobs that minimizes total cost (Assignment Problem).
+
+\section{Lower Bound Computation}
+
+For a partial assignment with workers $1..k$ assigned, the lower bound is:
+
+\[
+  LB = \text{cost of assigned workers} + \sum_{i=k+1}^{n} \min_{j \text{ unassigned}} C[i][j]
+\]
+
+This uses the row minimum of each unassigned worker as an optimistic estimate.
+
+\section{Algorithm}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{Cost matrix $C[n \times n]$}
+\KwOut{Minimum-cost assignment}
+Initialize priority queue $PQ$ with root (no assignments, $LB = \sum_i \min_j C[i][j]$)\;
+$best \leftarrow +\infty$\;
+\While{$PQ$ not empty}{
+  $node \leftarrow$ dequeue node with lowest lower bound\;
+  \If{$node.LB \geq best$}{\textbf{continue}}
+  \If{$node$ is complete assignment}{$best \leftarrow node.\text{cost}$; \textbf{continue}}
+  $i \leftarrow$ next unassigned worker\;
+  \ForEach{unassigned job $j$}{
+    Create child: assign worker $i$ to job $j$\;
+    Compute child.$LB$\;
+    \If{child.$LB < best$}{enqueue child}
+  }
+}
+\Return $best$\;
+\caption{B\&B for Assignment Problem (Least-Cost Branch)}
+\end{algorithm}
+
+\section{Example}
+
+Cost matrix ($n=4$):
+\[
+C = \begin{pmatrix}
+9 & 2 & 7 & 8 \\
+6 & 4 & 3 & 7 \\
+5 & 8 & 1 & 8 \\
+7 & 6 & 9 & 4
+\end{pmatrix}
+\]
+
+Row minimums: $2, 3, 1, 4$. Initial LB $= 2+3+1+4 = 10$.
+
+\textbf{Step 1}: Assign worker 1.
+\begin{itemize}
+  \item $w_1 \to j_1$ (cost 9): LB $= 9 + 3 + 1 + 4 = 17$
+  \item $w_1 \to j_2$ (cost 2): LB $= 2 + 3 + 1 + 4 = 10$
+  \item $w_1 \to j_3$ (cost 7): LB $= 7 + 4 + 1 + 4 = 16$
+  \item $w_1 \to j_4$ (cost 8): LB $= 8 + 3 + 1 + 4 = 16$
+\end{itemize}
+
+Expand $w_1 \to j_2$ (LB=10). Continue branching...
+
+\textbf{Optimal assignment:} $w_1 \to j_2$, $w_2 \to j_3$, $w_3 \to j_1$, $w_4 \to j_4$
+with total cost $2+3+5+4 = \mathbf{14}$.
+
+\section{Complexity}
+
+Worst case: $O(n!)$. With effective lower bounds and pruning, far fewer nodes are explored.
+The algorithm is particularly efficient when good lower bounds exist.
+
+\end{document}

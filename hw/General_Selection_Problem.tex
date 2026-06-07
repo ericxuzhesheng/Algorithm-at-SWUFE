@@ -1,0 +1,102 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[ruled,vlined]{algorithm2e}
+\geometry{margin=1in}
+
+\title{Homework: General Selection Problem}
+\author{Algorithm Design and Analysis}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement}
+
+Given an unsorted array $A[1..n]$ of $n$ distinct elements and an integer $k$
+($1 \leq k \leq n$), find the $k$-th smallest element (the element of rank $k$).
+
+\begin{enumerate}
+  \item Describe the randomized QuickSelect algorithm and analyze its expected time complexity.
+  \item Describe the deterministic Median-of-Medians algorithm and prove it runs in $O(n)$ worst-case time.
+\end{enumerate}
+
+\section{Algorithm 1: Randomized QuickSelect}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{Array $A[l..r]$, target rank $k$}
+\KwOut{The $k$-th smallest element}
+\If{$l = r$}{\Return $A[l]$}
+$p \leftarrow \text{RandomPartition}(A, l, r)$\;
+$q \leftarrow p - l + 1$\;
+\If{$k = q$}{\Return $A[p]$}
+\ElseIf{$k < q$}{\Return $\text{QuickSelect}(A, l, p-1, k)$}
+\Else{\Return $\text{QuickSelect}(A, p+1, r, k - q)$}
+\caption{Randomized QuickSelect}
+\end{algorithm}
+
+\subsection*{Expected Time Complexity}
+
+Each partition call takes $O(n)$ time. With a random pivot, the expected number of elements
+remaining after each partition is at most $3n/4$ (``good split'' probability $\geq 1/2$).
+
+\[
+  E[T(n)] = O(n) + E[T(\text{remaining})] \leq O(n) + E[T(3n/4)]
+\]
+
+By the geometric series argument:
+\[
+  E[T(n)] = O(n).
+\]
+
+Worst case (always selecting the minimum/maximum as pivot): $\Theta(n^2)$.
+
+\section{Algorithm 2: Median-of-Medians (Linear-Time Selection)}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{Array $A[1..n]$, target rank $k$}
+\KwOut{The $k$-th smallest element}
+Divide $A$ into $\lceil n/5 \rceil$ groups of 5 elements each\;
+Find the median of each group by insertion sort\;
+$M \leftarrow$ the array of $\lceil n/5 \rceil$ medians\;
+$m \leftarrow \text{Select}(M, \lceil\lceil n/5 \rceil / 2\rceil)$ (median of medians)\;
+Partition $A$ around $m$; let $m$ land at position $p$\;
+$q \leftarrow p$ (rank of $m$ in $A$)\;
+\If{$k = q$}{\Return $m$}
+\ElseIf{$k < q$}{\Return $\text{Select}(A[1..q-1], k)$}
+\Else{\Return $\text{Select}(A[q+1..n], k-q)$}
+\caption{Median-of-Medians Selection}
+\end{algorithm}
+
+\subsection*{Worst-Case Analysis}
+
+At least $3\lceil n/10 \rceil$ elements are $\leq m$ and at least $3\lceil n/10 \rceil$ are $\geq m$.
+So the recursive call on the remaining partition has size at most $7n/10 + 6$.
+
+\[
+  T(n) \leq T(\lceil n/5 \rceil) + T(7n/10 + 6) + O(n)
+\]
+
+By the Akra--Bazzi method (or substitution $T(n) \leq cn$):
+\[
+  \boxed{T(n) = O(n)}
+\]
+
+\section{Comparison}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Algorithm & Expected & Worst Case \\
+\midrule
+Randomized QuickSelect & $O(n)$ & $O(n^2)$ \\
+Median of Medians & $O(n)$ & $O(n)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In practice, Randomized QuickSelect is preferred due to small constants.
+
+\end{document}

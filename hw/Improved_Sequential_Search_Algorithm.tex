@@ -1,0 +1,96 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Homework: Improved Sequential Search Algorithm}
+\author{Algorithm Design and Analysis}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement}
+
+\begin{enumerate}
+  \item Describe the basic sequential search and its worst-case complexity.
+  \item Present the sentinel-based improvement and analyze its advantage.
+  \item Describe self-organizing search (move-to-front and transposition rules) and
+        analyze the expected number of comparisons under the access-frequency model.
+\end{enumerate}
+
+\section{Basic Sequential Search}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{Array $A[1..n]$, key $x$}
+\KwOut{Index $i$ such that $A[i]=x$, or $-1$}
+\For{$i \leftarrow 1$ \KwTo $n$}{
+  \If{$A[i] = x$}{\Return $i$}
+}
+\Return $-1$\;
+\caption{Basic Sequential Search}
+\end{algorithm}
+
+\textbf{Complexity:} $O(n)$ comparisons worst case; $O(n)$ average case for uniform access.
+
+\section{Sentinel Search}
+
+Place the search key $x$ at position $A[n+1]$ (sentinel). The loop then never requires
+a bounds check, halving the number of branch instructions per iteration.
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{Array $A[1..n+1]$, key $x$}
+\KwOut{Index $i$ such that $A[i]=x$, or $n+1$ (not found)}
+$A[n+1] \leftarrow x$\;
+$i \leftarrow 1$\;
+\While{$A[i] \neq x$}{$i \leftarrow i + 1$}
+\Return $i$\;
+\caption{Sentinel Sequential Search}
+\end{algorithm}
+
+\textbf{Advantage:} Each iteration executes \emph{one} comparison (instead of two in the basic
+version). Reduces constant factor by ~50\%, same $O(n)$ asymptotic complexity.
+
+\section{Self-Organizing Search}
+
+Under the \emph{access-frequency model}, elements are accessed with probabilities
+$p_1 \geq p_2 \geq \cdots \geq p_n$. Placing more frequently accessed elements near the front
+reduces expected comparison cost.
+
+\subsection*{Move-to-Front (MTF) Rule}
+After each successful search for element $e$, move $e$ to position 1.
+
+\textbf{Expected comparisons (static optimal):} $\sum_{i=1}^{n} i \cdot p_i$.
+\textbf{MTF amortized cost:} at most twice the static optimal (competitive ratio 2).
+
+\subsection*{Transposition Rule}
+After each successful search for element at position $i$, swap $A[i]$ and $A[i-1]$.
+
+Converges more slowly than MTF but causes less disruption for rarely accessed elements.
+
+\section{Complexity Summary}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Variant & Worst Case & Average Case (uniform) \\
+\midrule
+Basic & $O(n)$ & $(n+1)/2$ comparisons \\
+Sentinel & $O(n)$ & $(n+1)/2$ comparisons (fewer branch ops) \\
+Self-Organizing (optimal order) & $O(n)$ & $\sum_{i} i \cdot p_i$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Example}
+
+Array: $[3, 7, 1, 9, 4]$, access sequence: $9, 9, 9, 1, 9$.
+
+\textbf{After MTF on first access of 9 (at index 4):} $[9, 3, 7, 1, 4]$.
+Subsequent accesses to 9 cost only 1 comparison each.
+
+\end{document}

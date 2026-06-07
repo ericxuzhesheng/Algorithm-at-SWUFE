@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{booktabs, array}
+\geometry{margin=1in}
+
+\title{Homework: Dynamic Programming}
+\author{Algorithm Design and Analysis}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem 1: 0/1 Knapsack}
+
+Given $n$ items with weights $w_1,\ldots,w_n$ and values $v_1,\ldots,v_n$, and a knapsack
+capacity $W$, find the subset of items with maximum total value that fits in the knapsack.
+
+\subsection*{Recurrence}
+Let $dp[i][j]$ = maximum value using items $1..i$ with capacity $j$.
+\[
+  dp[i][j] = \begin{cases}
+    dp[i-1][j] & \text{if } w_i > j \\
+    \max(dp[i-1][j],\ dp[i-1][j-w_i] + v_i) & \text{otherwise}
+  \end{cases}
+\]
+Base case: $dp[0][j] = 0$ for all $j$.
+
+\subsection*{Complexity}
+Time: $O(nW)$. Space: $O(W)$ with rolling array.
+
+\subsection*{Example}
+$n=4$, $W=8$, weights $= [2,3,4,5]$, values $= [3,4,5,6]$.
+
+\begin{center}
+\begin{tabular}{c|ccccccccc}
+\toprule
+$i \backslash j$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\midrule
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+1 & 0 & 0 & 3 & 3 & 3 & 3 & 3 & 3 & 3 \\
+2 & 0 & 0 & 3 & 4 & 4 & 7 & 7 & 7 & 7 \\
+3 & 0 & 0 & 3 & 4 & 5 & 7 & 8 & 9 & 9 \\
+4 & 0 & 0 & 3 & 4 & 5 & 7 & 8 & 9 & 10 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Answer: $dp[4][8] = 10$ (items 2 and 4, weight $3+5=8$, value $4+6=10$).
+
+\section{Problem 2: Longest Common Subsequence (LCS)}
+
+\subsection*{Recurrence}
+Let $L[i][j]$ = length of LCS of $X[1..i]$ and $Y[1..j]$.
+\[
+  L[i][j] = \begin{cases}
+    0 & i=0 \text{ or } j=0 \\
+    L[i-1][j-1]+1 & X[i]=Y[j] \\
+    \max(L[i-1][j], L[i][j-1]) & \text{otherwise}
+  \end{cases}
+\]
+\subsection*{Complexity} $O(mn)$ time and space.
+
+\subsection*{Example}
+$X = \text{ABCBDAB}$, $Y = \text{BDCABA}$. LCS length $= 4$ (e.g., BCBA or BDAB).
+
+\section{Problem 3: Matrix Chain Multiplication}
+
+\subsection*{Recurrence}
+Let $m[i][j]$ = minimum scalar multiplications to compute $A_i A_{i+1} \cdots A_j$.
+\[
+  m[i][j] = \min_{i \leq k < j} \bigl\{ m[i][k] + m[k+1][j] + p_{i-1} p_k p_j \bigr\}
+\]
+with $m[i][i] = 0$.
+
+\subsection*{Complexity} $O(n^3)$ time, $O(n^2)$ space.
+
+\end{document}

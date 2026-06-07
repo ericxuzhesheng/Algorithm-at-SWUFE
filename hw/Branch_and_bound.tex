@@ -1,0 +1,88 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Homework: Branch and Bound}
+\author{Algorithm Design and Analysis}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement}
+
+Describe the Branch-and-Bound (B\&B) framework and apply it to the 0/1 Knapsack problem.
+Demonstrate the search process on a concrete instance.
+
+\section{Branch and Bound Framework}
+
+Branch-and-Bound is a systematic enumeration strategy that:
+\begin{enumerate}
+  \item \textbf{Branches}: splits the feasible region into sub-problems (children).
+  \item \textbf{Bounds}: computes an upper bound (for maximization) for each sub-problem.
+  \item \textbf{Prunes}: discards sub-problems whose upper bound cannot exceed the current best solution.
+\end{enumerate}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwIn{Root node of search tree}
+\KwOut{Optimal solution}
+Initialize priority queue $PQ$ with root node\;
+$best \leftarrow -\infty$\;
+\While{$PQ$ is not empty}{
+  $node \leftarrow$ dequeue node with highest upper bound from $PQ$\;
+  \If{$node.\text{upperBound} \leq best$}{\textbf{continue} (prune)}
+  \If{$node$ is a leaf}{$best \leftarrow \max(best, node.\text{value})$; \textbf{continue}}
+  \ForEach{child of $node$}{
+    Compute child.upperBound\;
+    \If{child.upperBound $> best$}{enqueue child into $PQ$}
+  }
+}
+\Return $best$\;
+\caption{Generic Branch-and-Bound (Best-First)}
+\end{algorithm}
+
+\section{Application: 0/1 Knapsack}
+
+\subsection*{Upper Bound Computation}
+
+Relax the 0/1 constraint to allow fractional items (fractional knapsack bound).
+Sort remaining items by value density $v_i/w_i$ and greedily fill the knapsack.
+
+\subsection*{Example}
+
+$n=4$, $W=10$. Items (sorted by $v/w$ descending):
+
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Item & Weight & Value & $v/w$ \\
+\midrule
+1 & 2 & 10 & 5.0 \\
+2 & 4 & 16 & 4.0 \\
+3 & 6 & 18 & 3.0 \\
+4 & 3 & 6  & 2.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Root node: capacity 10, value 0.
+Upper bound = $10 + 16 + (10-2-4)/6 \times 18 = 10+16+12 = 38$.
+
+\textbf{Branch on item 1:}
+\begin{itemize}
+  \item Include 1: capacity $= 8$, value $= 10$, UB = $10 + 16 + 18 \times (2/6) = 32$.
+  \item Exclude 1: capacity $= 10$, value $= 0$, UB = $16 + 18 + 6 \times (1/3) = 36$.
+\end{itemize}
+
+Continue expanding until leaf; optimal solution found: items 1, 2, 3 (value 44, weight 12 — infeasible).
+Correct optimal: items 1, 2, 4 (weight $2+4+3=9 \leq 10$, value $10+16+6=32$).
+
+\section{Complexity}
+
+Worst case: exponential $O(2^n)$. In practice, effective pruning dramatically reduces nodes explored.
+
+\end{document}

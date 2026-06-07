@@ -1,0 +1,15 @@
+# Ignore root-level textbook duplicate (already in slides/)
+*.pdf
+!hw/*.pdf
+!slides/*.pdf
+
+# Python cache
+__pycache__/
+*.pyc
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz

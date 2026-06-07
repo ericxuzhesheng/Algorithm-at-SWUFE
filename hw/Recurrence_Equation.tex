@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{algorithm2e}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Homework: Recurrence Equations}
+\author{Algorithm Design and Analysis}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement}
+
+Solve the following recurrence equations and express the solution in $\Theta$-notation.
+
+\begin{enumerate}
+  \item $T(n) = 2T(n/2) + n$
+  \item $T(n) = T(n/2) + 1$
+  \item $T(n) = 4T(n/2) + n^2$
+  \item $T(n) = 3T(n/3) + n \log n$
+  \item $T(n) = T(n-1) + n$
+  \item $T(n) = 2T(n-1) + 1$
+\end{enumerate}
+
+\section{Background: The Master Theorem}
+
+Given a recurrence of the form
+\[
+  T(n) = aT(n/b) + f(n), \quad a \geq 1,\ b > 1,
+\]
+let $c^* = \log_b a$. Then:
+
+\begin{description}
+  \item[Case 1] If $f(n) = O(n^{c^*-\varepsilon})$ for some $\varepsilon > 0$, then $T(n) = \Theta(n^{c^*})$.
+  \item[Case 2] If $f(n) = \Theta(n^{c^*} \log^k n)$ for some $k \geq 0$, then $T(n) = \Theta(n^{c^*} \log^{k+1} n)$.
+  \item[Case 3] If $f(n) = \Omega(n^{c^*+\varepsilon})$ and the regularity condition holds, then $T(n) = \Theta(f(n))$.
+\end{description}
+
+\section{Solutions}
+
+\subsection*{(1) $T(n) = 2T(n/2) + n$}
+$a=2, b=2, c^*=\log_2 2=1$. Here $f(n)=n=\Theta(n^1)$, so Case~2 applies ($k=0$).
+\[
+  \boxed{T(n) = \Theta(n \log n)}
+\]
+
+\subsection*{(2) $T(n) = T(n/2) + 1$}
+$a=1, b=2, c^*=0$. Here $f(n)=1=\Theta(n^0)$, so Case~2 applies.
+\[
+  \boxed{T(n) = \Theta(\log n)}
+\]
+
+\subsection*{(3) $T(n) = 4T(n/2) + n^2$}
+$a=4, b=2, c^*=2$. Here $f(n)=n^2=\Theta(n^2)$, so Case~2 applies.
+\[
+  \boxed{T(n) = \Theta(n^2 \log n)}
+\]
+
+\subsection*{(4) $T(n) = 3T(n/3) + n\log n$}
+$a=3, b=3, c^*=1$. Here $f(n)=n\log n=\Theta(n^1\log n)$, so Case~2 applies ($k=1$).
+\[
+  \boxed{T(n) = \Theta(n \log^2 n)}
+\]
+
+\subsection*{(5) $T(n) = T(n-1) + n$ (substitution method)}
+Unrolling: $T(n) = n + (n-1) + \cdots + 1 = \frac{n(n+1)}{2}$.
+\[
+  \boxed{T(n) = \Theta(n^2)}
+\]
+
+\subsection*{(6) $T(n) = 2T(n-1) + 1$ (substitution method)}
+Unrolling: $T(n) = 2^n T(0) + 2^{n-1} + \cdots + 1 = \Theta(2^n)$.
+\[
+  \boxed{T(n) = \Theta(2^n)}
+\]
+
+\section{Recursion Tree Analysis (Problem 1)}
+
+For $T(n) = 2T(n/2) + n$, the recursion tree has $\log_2 n$ levels.
+At level $i$ there are $2^i$ nodes each contributing $n/2^i$ work.
+Total work per level: $n$. Total over all levels:
+\[
+  T(n) = n \cdot \log_2 n = \Theta(n \log n).
+\]
+
+\end{document}
